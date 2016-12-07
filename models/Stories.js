@@ -2,8 +2,10 @@ var mongoose = require('mongoose');
 
 var StorySchema = new mongoose.Schema({
     name: String,
-    thema: String,
-    scenarios: {}
+    scenarios: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Scenario'
+    }]
 });
 
 mongoose.model('Story', StorySchema);
