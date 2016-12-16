@@ -23,15 +23,15 @@ router.get('/', function(req, res, next) {
 //Upload Images and Audio files
 router.post('/upload/image', function(req, res, next) {
     cloudinary.v2.uploader.upload(req.body.data, {resource_type: "image"}, function(error, result){
-      if(error){ return console.log('foutmelding');}
-      res.end(result.url);
+      if(error){ return console.log(error);}
+      res.send(result.url);
   });
 });
 
 router.post('/upload/audio', function(req, res, next){
   cloudinary.v2.uploader.upload(req.body.data, { resource_type: "video", chunk_size: 6000000} ,function(error, result){
-      if(error){ return console.log('foutmelding');}
-      res.end(result.url);
+      if(error){ return console.log(error);}
+      res.send(result.url);
   });
 });
 
@@ -70,14 +70,32 @@ router.param('animal', function(req, res, next, id){
   query.exec(function(err, animal){
         if (err) { return next(err); }
         if (!animal) { return next(new Error("can't find animal")); }
-
         req.animal = animal;
-
         return next();
   })
 });
 
 //Story routes
+router.param('story', function(req, res, next, id){
+  var query = Story.findById(id);
+  query.exec(function(err, story){
+        if (err) { return next(err); }
+        if (!story) { return next(new Error("can't find story")); }
+        req.story = story;
+        return next();
+  })
+});
+
+router.param('scenario', function(req, res, next, id){
+  var query = Scenario.findById(id);
+  query.exec(function(err, scenario){
+        if (err) { return next(err); }
+        if (!scenario) { return next(new Error("can't find scenario")); }
+        req.scenario = scenario;
+        return next();
+  })
+});
+
 router.get('/stories', function(req, res, next){
   Story.find(function(err, stories){
     if(err){return next(err);}
@@ -88,7 +106,6 @@ router.get('/stories', function(req, res, next){
 
 router.post('/stories', function(req, res, next){
   var story = new Story(req.body);
-
   story.save(function(err, story){
     if(err){return next(err);}
 
@@ -96,8 +113,51 @@ router.post('/stories', function(req, res, next){
   });
 });
 
+router.get('/stories/:story', function(req, res, next) {
+        res.json(req.story);
+});
+
+router.put('/stories/:story', function(req,res,next){
+  Story.findByIdAndUpdate(
+        req.story._id,
+        {$push: {"scenarios": {image : req.body.image, audio : req.body.audio}}},
+        {safe: true, new : true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+    story.save(function(err,story) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(story);
+  });
+});
+
+router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){
+  cloudinary.v2.uploader.destroy(req.animal.audio, function(error, result) {
+    if(error){return console.log('audio niet verwijderd');}
+    cloudinary.v2.uploader.destroy(req.animal.image, function(error, result) {
+      if(error){return console.log('image niet verwijderd');}
+        req.animal.remove(function(err,animal){
+          if(err){return next(err);}
+        });  
+     });
+   });  
+});
+
 //Theme routes
-/*router.get('/themes', function(req, res, next){
+router.param('theme', function(req, res, next, id){
+  var query = Theme.findById(id);
+  query.exec(function(err, theme){
+        if (err) { return next(err); }
+        if (!theme) { return next(new Error("can't find theme")); }
+        req.theme = theme;
+        return next();
+  })
+});
+
+router.get('/themes', function(req, res, next){
   Theme.find(function(err, themes){
     if(err){return next(err);}
 
@@ -114,26 +174,5 @@ router.post('/themes', function(req, res, next){
     res.json(theme)
   });
 });
-
-//Afbeeldingen opslaan
-router.post('/uploads/image',  function(req, res, next) {
-  console.log("Kas");
-  console.log(req);
-  console.log(req.file);
-  res.json({succes:true});
-  });
-  
-  /*var photo = new Photo(req.body);
-  photo.save(function(err, photo){
-    if(err){return next("foutmelding");}
-
-    res.json(photo);
-  });
-  uploadPhoto(req, res, function(err){
-    if(err){
-      console.log("foutmelding upload"); 
-      return; 
-    }
-  });*/
 
 module.exports = router;

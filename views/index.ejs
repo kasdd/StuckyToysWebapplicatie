@@ -4,30 +4,26 @@
     <title>Stucky Toys Studio</title>
     <link rel="stylesheet" href="stylesheets/style.css" />
     <link   href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
-    <script src="/javascripts/ng-file-upload/dist/ng-file-upload-shim.js"></script>
-    <script src="/javascripts/ng-file-upload/dist/ng-file-upload-all.js"></script>
-    <script src="/javascripts/ng-file-upload/dist/ng-file-upload.js"></script>
-    <script src="/javascripts/ng-file-upload/dist/ng-file-model.js"></script>
-    <script src="/javascripts/script.js"></script>
+
 </head>
 
 <body ng-app="stuckyToys">
+    
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
+        <ul class="topnav" id="myTopnav">
+        <li><a href="http://niklippens.classy.be/">Stucky Toys Studio</a></li>
+        <li><a href="#/home">Dieren</a></li>
+        <li><a href="#/stories">Verhalen</a></li>
+        <li><a href="#/theme">Thema's</a></li>
+    </ul>
             <ui-view></ui-view> <% // Hier komt de state %>
         </div>
     </div>
 
     <% // Home state %>
     <script type="text/ng-template" id="/home.html">
-    <ul class="topnav" id="myTopnav">
-        <li><a href="http://niklippens.classy.be/">Stucky Toys Studio</a></li>
-        <li><a href="#">Dieren</a></li>
-        <li><a href="#/stories">Verhalen</a></li>
-        <li><a href="#/theme">Thema's</a></li>
-    </ul>
+
     <table class="table table-hover">
         <tr>
             <th>Naam</th>
@@ -35,123 +31,78 @@
             <th></th>
             <th></th>
         </tr>
-        <tr ng-repeat="x in animals">
+        <tr ng-repeat="x in ctrl.animals">
             <td>{{x.name}}</td>
-            <td> <img src="{{x.image}}" ng-click="playSounds(x.audio)"/> </td> <audio ng-src="{{x.audio}}"/>
-            <td> <a ng-click="deleteAnimal(x)" >Verwijderen</a></td>
+            <td> <img src="{{x.image}}" ng-click="ctrl.playSounds(x.audio)"/> </td> <audio ng-src="{{x.audio}}"/>
+            <td> <a ng-click="ctrl.deleteAnimal(x)" >Verwijderen</a></td>
         </tr>
     </table>
     <% // Voeg dier toe %>
-    <form ng-submit="addAnimal()" style="margin-top:30px;">
+    <form ng-submit="ctrl.addAnimal()" style="margin-top:30px;">
         <h3>Voeg een nieuw dier toe</h3>
         <div class="form-group">
-            <input type="Naam" class="form-control" placeholder="Naam dier" ng-model="name" required></input>
+            <input type="Naam" class="form-control" placeholder="Naam dier" ng-model="ctrl.name" required></input>
              </br>
-            <label>Afbeelding</label>   <input type="file"  name="image" ng-file-model="image"  accept="image/*" ngf-max-size="20MB" ngf-min-height="100" 
+            <label>Afbeelding</label>   <input type="file"  name="image" ng-file-model="ctrl.image"  accept="image/*" ngf-max-size="20MB" ngf-min-height="100" 
                                         ngf-resize="{width: 100, height: 100} required"></input>
             </br>
-            <label>Geluid</label>   <input type="file"  name="audio" ng-file-model="audio"  accept="audio/*" required ></input>
+            <label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*" required ></input>
         </div>
         <button type="submit" class="btn btn-primary">Voeg toe</button>
     </form>
-</script>
-
-<% // Wijzigingen bij dieren %>
-<script type="text/ng-template" id="/animals.html">
-    <div class="page-header">
-        <h3>Maak wijzigingen bij {{animal.name}} aan!</h3>  
-    </div>
-<form ng-submit="changeAnimal(imageSrc, audioSrc)" style="margin-top:30px;">
-    <div class="form-group">
-        <label>Naam</label>    <input  name="first_name" placeholder="{{animal.name}}" class="form-control"  type="text" ng-model="name"/>
-        </br>
-        <label>Afbeelding</label> <input ng-file-select type="file" ngf-select ng-model="imageSrc"/>
-        </br>
-        <label>Geluid</label> <input ng-file-select type="file" ngf-select ng-model="audioSrc"/>
-        </br>
-    </div>
-        <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
-</form>
 </script>
 
 <% // Verhalen state %>
 <script type="text/ng-template" id="/stories.html">
-    <ul class="topnav" id="myTopnav">
-        <li><a href="http://niklippens.classy.be/">Stucky Toys Studio</a></li>
-        <li><a href="#/home">Dieren</a></li>
-        <li><a href="#">Verhalen</a></li>
-        <li><a href="#/theme">Thema's</a></li>        
-    </ul>
-    <table class="table table-hover">
-        <tr>
-            <th>Naam</th>
-            <th>Thema</th>
-            <th colspan="3">Scenario's</th>
-        </tr>
-        <tr ng-repeat="x in stories">
-            <td>{{x.name}}</td>
-            <td>{{x.thema}}</td>
-            <td>
-                <table class="table table-hover">
-                    <tr ng-repeat="y in x.scenarios">
-                        <td>{{y.audio}}</td>
-                        <td>{{y.image}}</td>
-                    </tr>
-                </table>
-            </td>
-            <td><a href ng-click="deleteStory(x._id);">Verwijderen</a></td>
-        </tr>
-    </table>
-    <form ng-submit="addStory()" style="margin-top:30px;">
+
+    <div ng-repeat="story in ctrl.stories">
+        <a href="#/stories/{{story._id}}">{{story.name}}</a>
+    </div>
+    <form ng-submit="ctrl.addStory()" style="margin-top:30px;">
         <h3>Voeg een nieuw verhaal toe</h3>
         <div class="form-group">
-            <input type="Naam" class="form-control" placeholder="Name" ng-model="name" required></input>
-        </div>
-        <div class="form-group">
-            <input type="Thema" class="form-control" placeholder="Thema" ng-model="thema"></input>
+            <input type="Naam" class="form-control" placeholder="Name" ng-model="ctrl.name" required></input>
         </div>
         <button type="submit" class="btn btn-primary">Voeg toe</button>
     </form>
-    </script>
+</script>
 
-    <% // Wijzigingen bij verhalen (scenario's) %>
-    <script type="text/ng-template" id="/story.html">
-        <div class="page-header">
-            <h3>Maak wijzigingen aan het {{story.name}} verhaal</h3>  
-        </div>
-        <form ng-submit="changeStory(imageSrc, audioSrc)" style="margin-top:30px;">
-            <div class="form-group" ng-repeat="x in story.scenarios">   
-            <label>Afbeelding</label> <input ng-file-select type="file" ngf-select ng-model="imageSrc" placeholder="{{x.image}}"/>
-            </br>
-            <label>Geluid</label> <input ng-file-select type="file" ngf-select ng-model="audioSrc" placeholder="{{x.audio}}"/>
-            </div>
-            <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
-            </form>
-            <form ng-submit="addScenario(imageSrc, audioSrc)">
-                <h3>Voeg nieuw scenario toe</h3>
-                <label>Afbeelding</label> <input ng-file-select type="file" ngf-select ng-model="imageSrc"/>
-                </br>
-                <label>Geluid</label> <input ng-file-select type="file" ngf-select ng-model="audioSrc"/>
-                </br>
-                <button type="submit" class="btn btn-primary">Voeg toe</button>
-            </form>
-    </script>
 
-        <% // Thema state %>
+<% // Verhaal state %>
+<script type="text/ng-template" id="/story.html">
+<div class="page-header">
+    <h3>
+        {{ctrl.story.name}}
+    </h3>
 
-        <script type="text/ng-template" id="/theme.html">
-    <ul class="topnav" id="myTopnav">
-        <li><a href="http://niklippens.classy.be/">Stucky Toys Studio</a></li>
-        <li><a href="#/home">Dieren</a></li>
-        <li><a href="#/stories">Verhalen</a></li>
-        <li><a href="#/theme">Thema's</a></li>
-    </ul>
+    <div ng-repeat="scenario in ctrl.post.scenarios">
+        <img src="{{scenario.img}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"/> <span class="glyphicon glyphicon-remove" ng-click="deleteScenario(scenario)"/>
+        </br>
+    </div>
+  </div>
+  <% // Voeg scenario toe %>
+  <h3>Voeg een nieuw scenario toe</h3>
+      <form ng-submit="ctrl.addScenario()" style="margin-top:30px;">
+<label>Afbeelding</label>   <input required type="file"  name="image" ng-file-model="ctrl.image"  accept="image/*" ngf-max-size="20MB" ngf-min-height="100" 
+                                        ngf-resize="{width: 100, height: 100} "></input>
+</br>
+<label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*"></input> 
+</br>
+<button type="submit" class="btn btn-primary">Voeg toe</button>
+</form>
+</script>
+
+
+
+<% // Thema state %>
+<script type="text/ng-template" id="/theme.html">
+
     <table class="table table-hover">
         <tr>
             <th>Naam</th>
             <th>Verhalen</th>
         </tr>
-        <tr ng-repeat="x in themes">
+        <tr ng-repeat="x in ctrl.themes">
             <td>{{x.name}}</td>
             <td>
                 <table>
@@ -160,23 +111,38 @@
                     </tr>
                 </table>
             </td>
-            <td><a href ng-click="deleteTheme(x._id);">Verwijderen</a></td>
+            <td><a href ng-click="ctrl.deleteTheme(x);">Verwijderen</a></td>
         </tr>
     </table>
     <% // Voeg Thema toe %>
-    <form ng-submit="addTheme(name, stories)" style="margin-top:30px;">
+    <form ng-submit="ctrl.addTheme(name, stories)" style="margin-top:30px;">
         <h3>Voeg een nieuw thema toe</h3>
         <div class="form-group">
-            <input type="Naam" class="form-control" placeholder="Naam thema" ng-model="name" required></input>
+            <input type="Naam" class="form-control" placeholder="Naam thema" ng-model="ctrl.name" required></input>
              </br>  
-             <div ng-repeat="x in stories" class="checkbox">
-                <input type="checkbox" name="{{x.name}}" ng-model="x.SELECTED" ng-true-value= true ng-false-value= false>{{x.name}}</input>
+             <div ng-repeat="x in ctrl.stories" class="checkbox">
+                <input type="checkbox" name="{{x.name}}" ng-model="ctrl.x.SELECTED" ng-true-value= true ng-false-value= false>{{x.name}}</input>
              </div>
         </div>
         <button type="submit" class="btn btn-primary">Voeg toe</button>
     </form>
 </script>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+    <script src="/javascripts/ng-file-upload/dist/ng-file-upload-shim.js"></script>
+    <script src="/javascripts/ng-file-upload/dist/ng-file-upload-all.js"></script>
+    <script src="/javascripts/ng-file-upload/dist/ng-file-upload.js"></script>
+    <script src="/javascripts/ng-file-upload/dist/ng-file-model.js"></script>
+    <script src="/javascripts/stuckyToysModule.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/services/animalService.js"></script>
+    <script src="/services/storiesService.js"></script>
+    <script src="/services/themeService.js"></script>
+    <script src="/controllers/AnimalController.js"></script>
+    <script src="/controllers/ThemeController.js"></script>
+    <script src="/controllers/StoriesController.js"></script>
+    <script src="/controllers/StoryController.js"></script>
 </body>
 
 </html>

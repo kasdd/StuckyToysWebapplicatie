@@ -1,17 +1,13 @@
 var mongoose = require('mongoose');
 
 var ScenarioSchema = new mongoose.Schema({
-    name: {
+    audio: {
         type: String,
         default: ""
     },
-    audio: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Audio'
-    },
     image: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Image'
+        type: String,
+        default: ""
     }
 });
 

@@ -1,0 +1,1 @@
+angular.module('stuckyToys', ['ui.router', 'ngFileUpload', 'ng-file-model']);
