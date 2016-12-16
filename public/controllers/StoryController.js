@@ -9,6 +9,7 @@
         var vm = this;
 
         vm.story;
+        vm.scenarios;
         vm.addScenario = addScenario;
         vm.deleteScenario = deleteScenario;
         vm.playSounds = playSounds;
@@ -16,13 +17,19 @@
         activate();
 
         function activate() {
-            getStory();
+            getStory();  
         }
-
+        
         function getStory() {
-            return storiesService.get($stateParams.id).then(function (data) {
-                vm.story = data;
-            })
+            vm.scenarios = [];
+            return storiesService.get($stateParams.id).then(function (story) {
+                vm.story = story;
+                    for (var i = 0; i < vm.story.scenarios.length; i++){
+                    storiesService.getScenario(vm.story.scenarios[i]).then(function(scenario){
+                        vm.scenarios.push(scenario);
+                    });
+                    }
+            });
         }
 
         function addScenario() {
@@ -40,9 +47,12 @@
                         audio: dataAudio
                     }).then(function (data) {
                         console.log(data);
+                        console.log(vm.story);
+                        vm.story.scenarios = vm.story.scenarios || [];    
                         vm.story.scenarios.push(data.data)
                         vm.audio = '';
                         vm.image = null;
+                        console.log(vm.story.scenarios);
                     });
                 });
             });

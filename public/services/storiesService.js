@@ -15,7 +15,8 @@
             addScenario: addScenario,
             uploadAudio: uploadAudio,
             uploadImage: uploadImage,
-            update : update
+            update : update,
+            getScenario : getScenario
         }
 
         return service;
@@ -39,6 +40,12 @@
             });
         };
 
+        function getScenario(id){
+            return $http.get('/scenarios/' + id).then(function(res){
+                return res.data;
+            });
+        };
+
         function deleteStory(story) {
             return $http.delete('/story/' + story._id).then(function (res) {
                 return res.data;
@@ -54,8 +61,6 @@
         }
 
         function update(id, story){
-            console.log(id);
-            console.log(story);
             return $http.put('/stories/' + id, story).success(function(data){
                 return data;
             });

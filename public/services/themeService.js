@@ -35,11 +35,7 @@
         };
 
         function deleteTheme(theme) {
-            return $http.delete('/theme/' + theme._id, {
-                headers: {
-                    Authorization: 'Bearer ' + auth.getToken()
-                }
-            }).then(function (res) {
+            return $http.delete('/themes/' + theme._id).then(function (res) {
                 return res.data;
             })
         };

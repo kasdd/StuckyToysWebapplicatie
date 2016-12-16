@@ -22,6 +22,7 @@
         }
 
         function getThemes() {
+            vm.themes;
             themeService.getAll().then(function (data) {
                 vm.themes = data.data;
             })
@@ -42,16 +43,17 @@
                 array.push(vm.stories[i]);
                 vm.stories[i].SELECTED = false;
             }
-
-            themeService.push({
+            themeService.create({
                 name: name,
                 stories : array
+            }).then(function(data){
+                vm.themes.push(data.data);
             });
         }
 
         function deleteTheme(theme) {
             themeService.deleteTheme(theme);
-                vm.theme.splice(theme._id,1);
+                vm.themes.splice(theme._id,1);
         }
     }
 })();

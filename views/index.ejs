@@ -75,8 +75,9 @@
         {{ctrl.story.name}}
     </h3>
 
-    <div ng-repeat="scenario in ctrl.post.scenarios">
-        <img src="{{scenario.img}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"/> <span class="glyphicon glyphicon-remove" ng-click="deleteScenario(scenario)"/>
+    <div ng-repeat="scenario in ctrl.scenarios">
+        <img src="{{scenario.image}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"></audio> 
+        <span class="glyphicon glyphicon-remove" ctrl.deleteScenario(scenario)/>
         </br>
     </div>
   </div>
@@ -86,12 +87,11 @@
 <label>Afbeelding</label>   <input required type="file"  name="image" ng-file-model="ctrl.image"  accept="image/*" ngf-max-size="20MB" ngf-min-height="100" 
                                         ngf-resize="{width: 100, height: 100} "></input>
 </br>
-<label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*"></input> 
+<label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*" required></input> 
 </br>
 <button type="submit" class="btn btn-primary">Voeg toe</button>
 </form>
 </script>
-
 
 
 <% // Thema state %>
@@ -114,6 +114,7 @@
             <td><a href ng-click="ctrl.deleteTheme(x);">Verwijderen</a></td>
         </tr>
     </table>
+
     <% // Voeg Thema toe %>
     <form ng-submit="ctrl.addTheme(name, stories)" style="margin-top:30px;">
         <h3>Voeg een nieuw thema toe</h3>
@@ -121,7 +122,7 @@
             <input type="Naam" class="form-control" placeholder="Naam thema" ng-model="ctrl.name" required></input>
              </br>  
              <div ng-repeat="x in ctrl.stories" class="checkbox">
-                <input type="checkbox" name="{{x.name}}" ng-model="ctrl.x.SELECTED" ng-true-value= true ng-false-value= false>{{x.name}}</input>
+                <input type="checkbox" name="{{x.name}}" ng-model="x.SELECTED" ng-true-value= true ng-false-value= false>{{x.name}}</input>
              </div>
         </div>
         <button type="submit" class="btn btn-primary">Voeg toe</button>

@@ -86,16 +86,6 @@ router.param('story', function(req, res, next, id){
   })
 });
 
-router.param('scenario', function(req, res, next, id){
-  var query = Scenario.findById(id);
-  query.exec(function(err, scenario){
-        if (err) { return next(err); }
-        if (!scenario) { return next(new Error("can't find scenario")); }
-        req.scenario = scenario;
-        return next();
-  })
-});
-
 router.get('/stories', function(req, res, next){
   Story.find(function(err, stories){
     if(err){return next(err);}
@@ -118,32 +108,55 @@ router.get('/stories/:story', function(req, res, next) {
 });
 
 router.put('/stories/:story', function(req,res,next){
-  Story.findByIdAndUpdate(
-        req.story._id,
-        {$push: {"scenarios": {image : req.body.image, audio : req.body.audio}}},
-        {safe: true, new : true},
-        function(err, model) {
-            console.log(err);
-        }
-    );
-    story.save(function(err,story) {
-      if (err) {
-        res.send(err);
-      }
-      res.json(story);
-  });
+  Story.findById(req.story._id, function(err, story){
+    console.log(story);
+    console.log('Scenario aanmaken');
+        var scenario = new Scenario(req.body);
+        scenario.save(function(err,scenario){
+          if(err){res.send(err);}
+        });
+        console.log(scenario);
+        story.scenarios = story.scenarios || [];
+        console.log(story.scenarios);
+        story.scenarios.push(scenario); 
+        story.save(function(err,story) {
+          if (err) {
+            res.send(err);
+          }
+            res.json(story);
+          }
+        );
+      });
 });
 
-router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){
+
+
+//Scenario routes
+router.param('scenario', function(req, res, next, id){
+  var query = Scenario.findById(id);
+  query.exec(function(err, scenario){
+        if (err) { return next(err); }
+        if (!scenario) { return next(new Error("can't find scenario")); }
+        req.scenario = scenario;
+        return next();
+  })
+});
+
+router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){  //Bewerken
   cloudinary.v2.uploader.destroy(req.animal.audio, function(error, result) {
     if(error){return console.log('audio niet verwijderd');}
     cloudinary.v2.uploader.destroy(req.animal.image, function(error, result) {
       if(error){return console.log('image niet verwijderd');}
-        req.animal.remove(function(err,animal){
+        req.story.scenarios.remove(function(err,animal){
           if(err){return next(err);}
         });  
      });
    });  
+});
+
+router.get('/scenarios/:scenario', function(req, res, next) {
+        console.log(req);
+        res.json(req.scenario);
 });
 
 //Theme routes
@@ -172,6 +185,13 @@ router.post('/themes', function(req, res, next){
     if(err){return next(err);}
 
     res.json(theme)
+  });
+});
+
+router.delete('/themes/:theme', function(req, res, next){
+  console.log(req.theme);
+  req.theme.remove(function(err, theme){
+    if(err)return next(err);
   });
 });
 

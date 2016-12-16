@@ -39,7 +39,6 @@
                         image: dataImg,
                         audio: dataAudio
                     }).then(function (data) {
-
                         vm.animals.push(data.data)
                         vm.name = '';
                         vm.audio = null;
