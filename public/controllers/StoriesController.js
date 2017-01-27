@@ -13,6 +13,7 @@
         vm.getStories = getStories;
         vm.getStory = getStory;
         vm.addStory = addStory;
+        vm.deleteStory = deleteStory;
 
         activate();
 
@@ -32,13 +33,19 @@
             })
         }
 
+        function deleteStory(id){
+            console.log(id);
+        }
+
         function addStory(){
             console.log(vm.name);
             var name = vm.name;
+            var selected = vm.selected;
             vm.name = '';
             if(name === ''){return;}
             storiesService.addStory({
                 name : name,
+                spinTheStory : selected,
                 scenarios: null
             }).then(function(data){
                 vm.stories.push(data.data);
