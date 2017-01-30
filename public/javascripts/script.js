@@ -20,7 +20,7 @@ function stuckyToysState($stateProvider, $urlRouterProvider){
         .state('story', {
             url: '/stories/{id}',
             templateUrl: '/story.html',
-            controller: 'StoryController',
+            controller: 'ScenarioController',
             controllerAs: 'ctrl',
         })
         .state('theme', {

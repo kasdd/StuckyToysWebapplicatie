@@ -1,4 +1,9 @@
 
+img{
+    border: 1px solid;
+    width: 100px;
+    height: 100px;
+}
 
 /* Remove margins and padding from the list, and add a black background color */
 ul.topnav {

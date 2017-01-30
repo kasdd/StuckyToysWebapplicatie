@@ -13,6 +13,7 @@
             get: get,
             deleteStory: deleteStory,
             addScenario: addScenario,
+            deleteScenario : deleteScenario,
             uploadAudio: uploadAudio,
             uploadImage: uploadImage,
             update : update,
@@ -47,7 +48,7 @@
         };
 
         function deleteStory(story) {
-            return $http.delete('/story/' + story._id).then(function (res) {
+            return $http.delete('/stories/' + story._id).then(function (res) {
                 return res.data;
             })
         };
@@ -60,20 +61,20 @@
             return $http.delete('/stories/' + id + '/scenarios', scenario);
         }
 
-        function update(id, story){
-            return $http.put('/stories/' + id, story).success(function(data){
+        function update(id, scenario){
+            return $http.put('/stories/' + id, scenario).success(function(data){
                 return data;
             });
         }
 
         function uploadAudio(audio) {
-            return $http.post('/upload/audio', audio).success(function (data) {
+            return $http.post('/upload/audio', audio).then(function (data) {
                 return data;
             });
         }
 
         function uploadImage(image) {
-            return $http.post('/upload/image', image).success(function (data) {
+            return $http.post('/upload/image', image).then(function (data) {
                 return data;
             });
         }

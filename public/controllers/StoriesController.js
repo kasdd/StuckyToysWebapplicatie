@@ -24,7 +24,11 @@
         function getStories() {
             storiesService.getAll().then(function (data) {
                 vm.stories = data.data
-            })
+                vm.stories.sort(function(a,b){
+                    if(a.name < b.name) return -1;
+                    if(a.name > b.name) return 1;
+                });
+            });
         }
 
         function getStory() {
@@ -33,8 +37,10 @@
             })
         }
 
-        function deleteStory(id){
-            console.log(id);
+        function deleteStory(story){
+            storiesService.deleteStory(story);
+            var index = vm.stories.findIndex(x=> x._id == story._id);
+            vm.stories.splice(index, 1);
         }
 
         function addStory(){

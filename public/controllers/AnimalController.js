@@ -22,7 +22,11 @@
         function getAnimals() {
             animalService.getAll().then(function (data) {
                 vm.animals = data.data;
-            })
+                vm.animals.sort(function(a,b){
+                    if(a.name < b.name) return -1;
+                    if(a.name > b.name) return 1;
+                });
+            });
         }
 
         function addAnimal() {
@@ -41,7 +45,7 @@
                     }).then(function (data) {
                         vm.animals.push(data.data)
                         vm.name = '';
-                        vm.audio = null;
+                        vm.audio = "";
                         vm.image = null;
                     });
                 });
@@ -50,7 +54,8 @@
 
         function deleteAnimal(animal) {
             animalService.deleteAnimal(animal);
-                vm.animals.splice(animal._id,1);
+            var index = vm.animals.findIndex(x=> x._id == animal._id);
+            vm.animals.splice(index, 1);
         }
 
         function playSounds(src) {

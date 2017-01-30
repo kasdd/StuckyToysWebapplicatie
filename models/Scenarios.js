@@ -8,6 +8,10 @@ var ScenarioSchema = new mongoose.Schema({
     image: {
         type: String,
         default: ""
+    },
+    opdracht: {
+        type: String,
+        default: ""
     }
 });
 

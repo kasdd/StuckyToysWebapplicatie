@@ -55,10 +55,12 @@
 <% // Verhalen state %>
 <script type="text/ng-template" id="/stories.html">
 
+
+
     <div ng-repeat="story in ctrl.stories">
         <a href="#/stories/{{story._id}}">{{story.name}}</a>
         <input type="checkbox" name="{{story.name}}" ng-model="story.SELECTED" ng-true-value= true ng-false-value= false>Spin the Story</input>
-        <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteStory(story)"/>
+        <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteStory(story   )"/>
     </div>
     <form ng-submit="ctrl.addStory()" style="margin-top:30px;">
         <h3>Voeg een nieuw verhaal toe</h3>
@@ -81,6 +83,7 @@
 
     <div ng-repeat="scenario in ctrl.scenarios">
         <img src="{{scenario.image}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"></audio> 
+        <span class="glyphicon glyphicon-play" ng-click="ctrl.playSounds(scenario.opdracht)"/> <audio ng-src="{{scenario.opdracht}}"></audio>
         <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteScenario(scenario)"/>
         </br>
     </div>
@@ -91,7 +94,9 @@
 <label>Afbeelding</label>   <input required type="file"  name="image" ng-file-model="ctrl.image"  accept="image/*" ngf-max-size="20MB" ngf-min-height="100" 
                                         ngf-resize="{width: 100, height: 100} "></input>
 </br>
-<label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*" required></input> 
+<label>Geluid</label>   <input type="file"  name="audio" ng-file-model="ctrl.audio"  accept="audio/*"></input> 
+</br>
+<label>Opdracht</label>   <input type="file"  name="Opdracht" ng-file-model="ctrl.opdracht"  accept="audio/*"></input> 
 </br>
 <button type="submit" class="btn btn-primary">Voeg toe</button>
 </form>
@@ -147,7 +152,7 @@
     <script src="/controllers/AnimalController.js"></script>
     <script src="/controllers/ThemeController.js"></script>
     <script src="/controllers/StoriesController.js"></script>
-    <script src="/controllers/StoryController.js"></script>
+    <script src="/controllers/ScenarioController.js"></script>
 
 </body>
 

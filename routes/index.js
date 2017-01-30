@@ -24,6 +24,7 @@ router.get('/', function(req, res, next) {
 router.post('/upload/image', function(req, res, next) {
     cloudinary.v2.uploader.upload(req.body.data, {resource_type: "image"}, function(error, result){
       if(error){ return console.log(error);}
+      console.log(result.url);
       res.send(result.url);
   });
 });
@@ -31,6 +32,7 @@ router.post('/upload/image', function(req, res, next) {
 router.post('/upload/audio', function(req, res, next){
   cloudinary.v2.uploader.upload(req.body.data, { resource_type: "video", chunk_size: 6000000} ,function(error, result){
       if(error){ return console.log(error);}
+      console.log(result.url);
       res.send(result.url);
   });
 });
@@ -107,15 +109,38 @@ router.get('/stories/:story', function(req, res, next) {
         res.json(req.story);
 });
 
+router.delete('/stories/:story', function(req, res, next){  
+  if(req.story.scenarios !== null){
+    for(var scenario in req.story.scenarios){
+      cloudinary.v2.uploader.destroy(scenario.image, function(error, result){
+        if(error){return console.log('image niet verwijderd');}
+     cloudinary.v2.uploader.destroy(scenario.audio, function(error, result){
+      if(error){return console.log('audio niet verwijderd');}
+      });
+    });
+  }
+    req.story.remove(function(err,story){
+      if(err){return next(err);}
+        console.log('verhaal verwijderd');
+    });
+    
+  } else {
+    req.story.remove(function(err,story){
+    if(err){return next(err);}
+     console.log('verhaal verwijderd');
+    });
+    }
+});
+
 router.put('/stories/:story', function(req,res,next){
   Story.findById(req.story._id, function(err, story){
-    console.log(story);
-    console.log('Scenario aanmaken');
+      //Scenario aanmaken
         var scenario = new Scenario(req.body);
         scenario.save(function(err,scenario){
           if(err){res.send(err);}
         });
         console.log(scenario);
+        console.log('aangemaakt scenario');
         story.scenarios = story.scenarios || [];
         console.log(story.scenarios);
         story.scenarios.push(scenario); 
@@ -129,8 +154,6 @@ router.put('/stories/:story', function(req,res,next){
       });
 });
 
-
-
 //Scenario routes
 router.param('scenario', function(req, res, next, id){
   var query = Scenario.findById(id);
@@ -142,13 +165,17 @@ router.param('scenario', function(req, res, next, id){
   })
 });
 
-router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){  //Bewerken
-  cloudinary.v2.uploader.destroy(req.animal.audio, function(error, result) {
+router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){ 
+  console.log(req.story.scenario);
+  cloudinary.v2.uploader.destroy(req.scenario.audio, function(error, result) {
     if(error){return console.log('audio niet verwijderd');}
-    cloudinary.v2.uploader.destroy(req.animal.image, function(error, result) {
+    cloudinary.v2.uploader.destroy(req.scenario.image, function(error, result) {
       if(error){return console.log('image niet verwijderd');}
-        req.story.scenarios.remove(function(err,animal){
+      cloudinary.v2.uploader.destroy(req.scenario.opdracht, function(error, result){
+        if(error){return console.log('opdracht niet verwijderd');}
+         req.story.scenarios.remove(function(err,animal){
           if(err){return next(err);}
+          });
         });  
      });
    });  
