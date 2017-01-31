@@ -54,9 +54,11 @@
                             opdracht: dataOpdracht.data
                         }).then(function (data) {
                             console.log(data);
-                            console.log(vm.story);
                             vm.story.scenarios = vm.story.scenarios || [];
+                            console.log(vm.story);
+                            console.log(data.data);
                             vm.story.scenarios.push(data.data);
+                            console.log(vm.story);
                             vm.audio = '';
                             vm.image = null;
                             vm.opdracht = null;

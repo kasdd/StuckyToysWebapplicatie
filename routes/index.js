@@ -166,23 +166,31 @@ router.param('scenario', function(req, res, next, id){
 });
 
 router.delete('/stories/:story/scenarios/:scenario', function(req, res, next){ 
-  console.log(req.story.scenario);
   cloudinary.v2.uploader.destroy(req.scenario.audio, function(error, result) {
     if(error){return console.log('audio niet verwijderd');}
     cloudinary.v2.uploader.destroy(req.scenario.image, function(error, result) {
       if(error){return console.log('image niet verwijderd');}
       cloudinary.v2.uploader.destroy(req.scenario.opdracht, function(error, result){
         if(error){return console.log('opdracht niet verwijderd');}
-         req.story.scenarios.remove(function(err,animal){
+        var query = Story.findById(req.story._id);
+        query.exec(function (err, story){ // Story ophalen in DB
+          console.log(story);
+          story.scenarios.pull({_id : req.scenario._id})//ID in array verwijderen
+          console.log(story);
+          story.save(function(err, story){  //Opslaan in DB
+          if(err){res.send(err)};
+                  req.scenario.remove(function(err,scenario){  //Scenario in MongoDB verwijderen
           if(err){return next(err);}
           });
-        });  
-     });
-   });  
-});
+          res.json(story); 
+          });
+        });
+      });
+    });  
+  });
+});  
 
 router.get('/scenarios/:scenario', function(req, res, next) {
-        console.log(req);
         res.json(req.scenario);
 });
 

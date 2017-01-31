@@ -5,6 +5,13 @@ img{
     height: 100px;
 }
 
+.scenarios{
+    border: 1px solid;
+    width: 250px;
+    height: 250px;
+    margin: 5px;
+}
+
 /* Remove margins and padding from the list, and add a black background color */
 ul.topnav {
     list-style-type: none;

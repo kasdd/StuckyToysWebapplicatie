@@ -50,7 +50,7 @@
         function deleteStory(story) {
             return $http.delete('/stories/' + story._id).then(function (res) {
                 return res.data;
-            })
+            });
         };
 
         function addScenario(id, scenario) {
@@ -58,9 +58,10 @@
         }
 
         function deleteScenario(id, scenario){
-            return $http.delete('/stories/' + id + '/scenarios', scenario);
+            return $http.delete('/stories/' + id + '/scenarios/' + scenario._id, scenario).then(function(res){
+                return res.data;
+            });
         }
-
         function update(id, scenario){
             return $http.put('/stories/' + id, scenario).success(function(data){
                 return data;
