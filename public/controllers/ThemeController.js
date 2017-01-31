@@ -31,7 +31,7 @@
         function getStories() {
             storiesService.getAll().then(function (data) {
                 vm.stories = data.data;
-            })
+            });
         }
 
         function addTheme() {

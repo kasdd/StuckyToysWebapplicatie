@@ -194,6 +194,16 @@ router.get('/scenarios/:scenario', function(req, res, next) {
         res.json(req.scenario);
 });
 
+router.get('/scenarios', function(req, res, next){
+  Scenario.find(function(err, scenarios){
+    if(err){return next(err);}
+
+    res.json(scenarios);
+  });
+});
+
+
+
 //Theme routes
 router.param('theme', function(req, res, next, id){
   var query = Theme.findById(id);

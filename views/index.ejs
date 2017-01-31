@@ -111,16 +111,11 @@
             <th>Naam</th>
             <th>Verhalen</th>
         </tr>
-        <tr ng-repeat="x in ctrl.themes">
-            <td>{{x.name}}</td>
-            <td>
-                <table>
-                    <tr ng-repeat="y in x.stories">
-                    <td>{{y.name}}</td>
-                    </tr>
-                </table>
-            </td>
-            <td><a href ng-click="ctrl.deleteTheme(x);">Verwijderen</a></td>
+        <tr ng-repeat="thema in ctrl.themes">
+            <td>{{thema.name}}</td>
+            <td ng-repeat-start="verhaal in thema.stories"> {{verhaal.id}} </td>
+            <td  ng-repeat-end></td>
+            <td><a href ng-click="ctrl.deleteTheme(thema);">Verwijderen</a></td>
         </tr>
     </table>
 

@@ -53,12 +53,8 @@
                             audio: dataAudio.data,
                             opdracht: dataOpdracht.data
                         }).then(function (data) {
-                            console.log(data);
                             vm.story.scenarios = vm.story.scenarios || [];
-                            console.log(vm.story);
-                            console.log(data.data);
                             vm.story.scenarios.push(data.data);
-                            console.log(vm.story);
                             vm.audio = '';
                             vm.image = null;
                             vm.opdracht = null;
@@ -73,6 +69,7 @@
             storiesService.deleteScenario(vm.story._id, scenario);
             var index = vm.scenarios.findIndex(x => x._id == scenario._id);
             vm.story.scenarios.splice(index, 1);
+            getStory();
         }
 
         function playSounds(src) {
