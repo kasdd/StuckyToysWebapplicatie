@@ -46,7 +46,7 @@
         function addStory(){
             console.log(vm.name);
             var name = vm.name;
-            var selected = vm.selected;
+            var selected = vm.selected || false;
             vm.name = '';
             if(name === ''){return;}
             storiesService.addStory({

@@ -202,8 +202,6 @@ router.get('/scenarios', function(req, res, next){
   });
 });
 
-
-
 //Theme routes
 router.param('theme', function(req, res, next, id){
   var query = Theme.findById(id);

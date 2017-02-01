@@ -57,10 +57,21 @@
 
 
 
-    <div ng-repeat="story in ctrl.stories">
-        <a href="#/stories/{{story._id}}">{{story.name}}</a>
-        <input type="checkbox" name="{{story.name}}" ng-model="story.SELECTED" ng-true-value= true ng-false-value= false>Spin the Story</input>
-        <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteStory(story   )"/>
+    <div class="verhaal">
+    <table class="table table-hover">
+        <tr>
+            <th>Verhaal</th>
+            <th>Spin The Story</th>
+            <th>Verwijderen</th>
+        </tr>
+        <tr ng-repeat="story in ctrl.stories">
+        <td><a href="#/stories/{{story._id}}">{{story.name}}</a></td>
+        <td ng-show="{{story.spinTheStory}}"><span class="glyphicon glyphicon-ok"/></td> 
+        <td ng-hide="{{story.spinTheStory}}"><span class="glyphicon glyphicon-remove"/></td> 
+        <td><span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteStory(story)"/></td>
+        </tr>
+    </table>
+        
     </div>
     <form ng-submit="ctrl.addStory()" style="margin-top:30px;">
         <h3>Voeg een nieuw verhaal toe</h3>
@@ -81,7 +92,7 @@
         {{ctrl.story.name}}
     </h3>
 
-    <div ng-repeat="scenario in ctrl.scenarios" >
+    <div ng-repeat="scenario in ctrl.scenarios">
         <img class="scenarios" src="{{scenario.image}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"></audio> 
         <span class="glyphicon glyphicon-play" ng-click="ctrl.playSounds(scenario.opdracht)"/> <audio ng-src="{{scenario.opdracht}}"></audio>
         <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteScenario(scenario)"/>
@@ -113,8 +124,7 @@
         </tr>
         <tr ng-repeat="thema in ctrl.themes">
             <td>{{thema.name}}</td>
-            <td ng-repeat-start="verhaal in thema.stories"> {{verhaal.id}} </td>
-            <td  ng-repeat-end></td>
+            <td ng-repeat="story in thema.stories">{{ctrl.getStoryById(story)}}</td> <td ng-repeat-end/>
             <td><a href ng-click="ctrl.deleteTheme(thema);">Verwijderen</a></td>
         </tr>
     </table>

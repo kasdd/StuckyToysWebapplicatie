@@ -10,7 +10,7 @@
         var service = {
             getAll: getAll,
             addStory: create,
-            get: get,
+            getStoryById: get,
             deleteStory: deleteStory,
             addScenario: addScenario,
             deleteScenario : deleteScenario,

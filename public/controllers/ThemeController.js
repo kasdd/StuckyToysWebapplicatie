@@ -7,12 +7,12 @@
 
     function ThemeController(storiesService, themeService, Upload) {
         var vm = this;
-
+        vm.story;
         vm.themes;
         vm.stories;
-
         vm.addTheme = addTheme;
         vm.deleteTheme = deleteTheme;
+        vm.getStoryById = getStoryById;
 
         activate();
 
@@ -25,7 +25,15 @@
             vm.themes;
             themeService.getAll().then(function (data) {
                 vm.themes = data.data;
-            })
+            });
+        }
+
+        function getStoryById(id){
+            for(var story in vm.stories){
+                if(id === story._id){
+                    return story.name;
+                }
+            }
         }
 
         function getStories() {
