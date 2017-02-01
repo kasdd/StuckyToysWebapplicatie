@@ -12,7 +12,7 @@
         vm.stories;
         vm.addTheme = addTheme;
         vm.deleteTheme = deleteTheme;
-        vm.getStoryById = getStoryById;
+        vm.check = check;
 
         activate();
 
@@ -22,18 +22,19 @@
         }
 
         function getThemes() {
-            vm.themes;
             themeService.getAll().then(function (data) {
                 vm.themes = data.data;
             });
         }
 
-        function getStoryById(id){
-            for(var story in vm.stories){
-                if(id === story._id){
-                    return story.name;
+        function check(story, thema){
+            for(var id = 0; id<thema.stories.length; id++){
+                console.log(thema.stories[id]);
+                if(story._id == thema.stories[id]){
+                    return true;
                 }
             }
+            return false;
         }
 
         function getStories() {
@@ -59,6 +60,7 @@
             }).then(function (data) {
                 vm.themes.push(data.data);
             });
+            vm.name='';
         }
 
         function deleteTheme(theme) {

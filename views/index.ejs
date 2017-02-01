@@ -94,7 +94,7 @@
 
     <div ng-repeat="scenario in ctrl.scenarios">
         <img class="scenarios" src="{{scenario.image}}" ng-click="ctrl.playSounds(scenario.audio)"/> <audio ng-src="{{scenario.audio}}"></audio> 
-        <span class="glyphicon glyphicon-play" ng-click="ctrl.playSounds(scenario.opdracht)"/> <audio ng-src="{{scenario.opdracht}}"></audio>
+        <span class="glyphicon glyphicon-volume-up" ng-click="ctrl.playSounds(scenario.opdracht)"/> <audio ng-src="{{scenario.opdracht}}"></audio>
         <span class="glyphicon glyphicon-remove" ng-click="ctrl.deleteScenario(scenario)"/>
         </br>
     </div>
@@ -122,11 +122,14 @@
             <th>Naam</th>
             <th>Verhalen</th>
         </tr>
-        <tr ng-repeat="thema in ctrl.themes">
+       <tr ng-repeat="thema in ctrl.themes">
             <td>{{thema.name}}</td>
-            <td ng-repeat="story in thema.stories">{{ctrl.getStoryById(story)}}</td> <td ng-repeat-end/>
+            <td ng-repeat-start="story in ctrl.stories">
+            <td ng-show="ctrl.check(story, thema)">{{story.name}}</td>  
+            <td ng-repeat-end></td>
             <td><a href ng-click="ctrl.deleteTheme(thema);">Verwijderen</a></td>
         </tr>
+
     </table>
 
     <% // Voeg Thema toe %>
